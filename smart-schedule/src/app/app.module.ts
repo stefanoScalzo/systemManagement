@@ -11,11 +11,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   declarations: [
     AppComponent,
     HomeComponent,
-    MatButtonModule
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    MatButtonModule,
     BrowserAnimationsModule
   ],
   providers: [],
