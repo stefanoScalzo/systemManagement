@@ -16,12 +16,12 @@ export class EventCreatorComponent implements OnInit {
 
   formdata: FormGroup =new FormGroup({
     eventDate: new FormControl(Validators.required),
-    eventName: new FormControl("", Validators.required),
-    eventPriority: new FormControl(Validators.required),
-    eventStartHour: new FormControl(Validators.required),
-    eventStartMinute: new FormControl(Validators.required),
-    eventEndHour: new FormControl(Validators.required),
-    eventEndMinute: new FormControl(Validators.required)
+    eventName: new FormControl("dedf", Validators.required),
+    eventPriority: new FormControl(0,Validators.required),
+    eventStartHour: new FormControl(0,Validators.required),
+    eventStartMinute: new FormControl(0,Validators.required),
+    eventEndHour: new FormControl(1,Validators.required),
+    eventEndMinute: new FormControl(0,Validators.required)
   });
   constructor() { }
 

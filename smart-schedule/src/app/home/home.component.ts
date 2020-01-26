@@ -34,11 +34,15 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit() {
+    const tempDay: TimeSlot = {
+      available: true,
+    };
     for (let i = 0; i < 8; i++) {
       this.userCalendar.push(this.timePerDay);
     }
     for (let j = 0; j < 96 ; j++) {
-      this.timePerDay.timeSlot.push({eventname: 'COMP 354', priority: 5});
+
+      this.timePerDay.timeSlot.push(tempDay);
       // this.timePerDay.available = this.timePerDay.available - 1;
     }
     console.log(this.userCalendar);
@@ -137,18 +141,19 @@ export class HomeComponent implements OnInit {
   }
 
   add(object) {
-     console.log('object you are looking for');
-     console.log(object);
-    let lengthOfObj = this.length(object.get('eventStartHour'), object.get('eventStartMinute'), object.get('eveEndrtHour'), object.get('eventEndMinute'));
-    if (this.userCalendar[this.monthToDate + this.day].available >= lengthOfObj) {
-      if (this.consecutiveAvailibility(lengthOfObj)!==null) { // if stuck availibility
-        this.userCalendar[this.monthToDate + this.day].timeSlot
-        .splice(this.consecutiveAvailibility(lengthOfObj), 0,
-        {
-          eventname: object.get('eventName'),
-          priority: object.get('eventPriority'),
-          startingLength: lengthOfObj
-        });
+     let lengthOfObj = this.length(object.get('eventStartHour').value, object.get('eventStartMinute').value, object.get('eventEndHour').value, object.get('eventEndMinute').value);
+     if (this.userCalendar[this.monthToDate + this.day-1].available >= lengthOfObj) {
+      if (this.consecutiveAvailibility(lengthOfObj)!= 100) { // if stuck togeather availibility
+        for(let j=0; j<lengthOfObj; j++){
+          this.userCalendar[this.monthToDate + this.day].timeSlot
+          .splice(this.consecutiveAvailibility(lengthOfObj), 1,
+          {
+            eventname: object.get('eventName'),
+            priority: object.get('eventPriority'),
+            startingLength: lengthOfObj,
+            available: false
+          });
+        }
       }
       console.log(this.userCalendar);
 
@@ -158,17 +163,37 @@ export class HomeComponent implements OnInit {
 
   consecutiveAvailibility(neededTime) {
     const presetNeededTime = neededTime;
-    this.userCalendar[this.monthToDate + this.day].timeSlot.forEach(element => {
-      if (!element) {
-        neededTime--;
+    for(let i=0; i<this.userCalendar[this.monthToDate + this.day-1].timeSlot.length;i++) {
+      if (this.userCalendar[this.monthToDate + this.day-1].timeSlot[i].available == true) {
+        neededTime --;
         if (neededTime == 0) {
-          return (this.userCalendar[this.monthToDate + this.day].timeSlot.indexOf(element) - neededTime);
+          console.log('rwfder');
+          console.log(i-presetNeededTime+1);
+          return i-presetNeededTime+1;
         }
-      } else {
+      }
+      else if(this.userCalendar[this.monthToDate + this.day-1].timeSlot[i].available == false){
         neededTime = presetNeededTime;
       }
-    });
-    return null; // no consecutive availibility return false
+    }
+    return 100;
+
+    // this.userCalendar[this.monthToDate + this.day-1].timeSlot.forEach(element => {
+    //   if (element.available==true) {
+    //     console.log('found nothing');
+    //     neededTime--;
+    //     if (neededTime == 0) {
+    //       console.log('yesssss');
+    //       console.log(this.userCalendar[this.monthToDate + this.day-1].timeSlot.indexOf(element));
+    //       console.log(this.userCalendar[this.monthToDate + this.day-1].timeSlot.indexOf(element) - presetNeededTime);
+    //       return (this.userCalendar[this.monthToDate + this.day-1].timeSlot.indexOf(element) - presetNeededTime);
+    //     }
+    //   } 
+    //   else {
+    //     neededTime = presetNeededTime;
+    //   }
+    // });
+    // return null; // no consecutive availibility return false
   }
 
   startTime() {
