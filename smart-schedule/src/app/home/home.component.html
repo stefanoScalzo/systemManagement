@@ -14,13 +14,20 @@
     <div class="flex-layout-inner">
         <div class="flex-row">
             <ng-container  *ngFor="let day of userCalendar; let i = index;">
-                <ng-container *ngIf= "true">
-                <h1>Day {{i}}</h1>
-                    <ng-container *ngFor="let time of day; let j = index;">
-                        <div class="flex-column">
-                            <h3 class="header">{{mathFloor(j/4)}}:{{(j%4)*15}}</h3>
-                            <h4 class="event">{{time.eventname}}</h4>
-                        </div>
+                <ng-container *ngIf= "i>=dayToStartingIndex && i<dayToStartingIndex+7">
+                <div class="flex-column">
+                    <h1>{{monthToString}} {{i+1}}</h1>
+                    <button mat-icon-button (click)="dayShown(i)">
+                        <mat-icon>view_list</mat-icon>
+                    </button>
+                </div>
+                    <ng-container *ngIf="boolArray[i]">
+                        <ng-container *ngFor="let time of day.timeSlot; let j = index;">
+                            <div class="flex-column">
+                                <h3 class="header">{{mathFloor(j/4)}}:{{(j%4)*15}}</h3>
+                                <h4 class="event">{{time.eventname}}</h4>
+                            </div>
+                        </ng-container>
                     </ng-container>
                 </ng-container>
             </ng-container>
