@@ -1,0 +1,28 @@
+<!-- <mat-form-field>
+  <mat-list role='list'>
+    <mat-list-item  role='listitem' *ngFor="let event of events">
+      <h4>{{ event }}
+      <mat-select placeholder="Priority">
+        <mat-option value="prio" *ngFor="let prio of prios">
+          {{ prio }}
+        </mat-option>
+      </mat-select>
+    </h4>
+    </mat-list-item>
+  </mat-list>
+</mat-form-field>
+
+ -->
+ <div *ngFor="let event of events">
+   <div class="flex">
+    <h4 class="event">{{ event }}</h4>
+    <mat-form-field>
+          <mat-select placeholder="Priority">
+            <mat-option  value="prio" *ngFor="let prio of prios">
+                   {{ prio }}
+            </mat-option>
+          </mat-select>
+    </mat-form-field>
+   </div>
+</div>
+
