@@ -16,7 +16,7 @@
             <ng-container  *ngFor="let day of userCalendar; let i = index;">
                 <ng-container *ngIf= "i>=dayToStartingIndex && i<dayToStartingIndex+7">
                 <div class="flex-column">
-                    <h1>{{monthToString}} {{i+1}}</h1>
+                    <h1>{{monthToString}} {{i}}</h1>
                     <button mat-icon-button (click)="dayShown(i)">
                         <mat-icon>view_list</mat-icon>
                     </button>

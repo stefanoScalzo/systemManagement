@@ -1,5 +1,6 @@
 interface TimeSlot {
-    eventname: String;
-    priority: number;
+    available: boolean;
+    eventname?: String;
+    priority?: number;
     startingLength?: number;
 }
