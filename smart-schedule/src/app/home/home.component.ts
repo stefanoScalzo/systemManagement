@@ -45,8 +45,6 @@ export class HomeComponent implements OnInit {
       this.timePerDay.timeSlot.push(tempDay);
       // this.timePerDay.available = this.timePerDay.available - 1;
     }
-    console.log(this.userCalendar);
-    console.log(this.userCalendar);
   }
 
   dayShown(index) {
@@ -80,7 +78,7 @@ export class HomeComponent implements OnInit {
   }
 
 
-  openPriorityDialog() {
+  openPriorityDialog() { // where priorities will be set
     const dialogRef = this.dialog.open(EventPriorityComponent);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -141,39 +139,47 @@ export class HomeComponent implements OnInit {
   }
 
   add(object) {
-     let lengthOfObj = this.length(object.get('eventStartHour').value, object.get('eventStartMinute').value, object.get('eventEndHour').value, object.get('eventEndMinute').value);
-     if (this.userCalendar[this.monthToDate + this.day-1].available >= lengthOfObj) {
-      if (this.consecutiveAvailibility(lengthOfObj)!= 100) { // if stuck togeather availibility
-        let tryme= this.consecutiveAvailibility(lengthOfObj);
+    let lengthOfObj = this.length(object.get('eventStartHour').value, object.get('eventStartMinute').value, object.get('eventEndHour').value, object.get('eventEndMinute').value);
+    console.log('lengthOfObj'+lengthOfObj);
+    console.log('available'+this.userCalendar[this.monthToDate + this.day - 1].available);
+    if (this.userCalendar[this.monthToDate + this.day - 1].available >= lengthOfObj) {
+      console.log('enter me2');
 
-        for(let j=this.startTimeSlot(object.get('eventStartHour').value,
-        object.get('eventStartMinute').value); j<lengthOfObj; j++) {
-          this.userCalendar[this.monthToDate + this.day].timeSlot[j]= {
+      if (this.consecutiveAvailibility(lengthOfObj) != 100 &&
+      this.userCalendar[this.monthToDate + this.day - 1].timeSlot[this.startTimeSlot(object.get('eventStartHour').value, object.get('eventStartMinute').value )].available
+
+      ) { // if stuck togeather availibility
+        console.log('enter me');
+        const tryme = this.consecutiveAvailibility(lengthOfObj);
+        this.userCalendar[this.monthToDate + this.day - 1].available = this.userCalendar[this.monthToDate + this.day - 1].available-lengthOfObj;
+
+        for (let j = this.startTimeSlot(object.get('eventStartHour').value,
+        object.get('eventStartMinute').value); j < lengthOfObj; j++) {
+          this.userCalendar[this.monthToDate + this.day-1].timeSlot[j] = {
             eventname: object.get('eventName').value,
             priority: object.get('eventPriority').value,
             startingLength: lengthOfObj,
             available: false
-          }
-          this.userCalendar[this.monthToDate + this.day-1].available-=lengthOfObj;
+          };
         }
-      }
-      if (this.consecutiveAvailibility(lengthOfObj) == 100 && object.get('eventPriority').value==0) { // if not stuck togeather availibility
+      } else { // if not stuck togeather availibility
         console.log('nooooo');
-        let collisions  = this.numberOfCollisions(this.startTimeSlot(object.get('eventStartHour').value,object.get('eventStartMinute').value ),object);
-        this.makeSpace(this.userCalendar[this.monthToDate + this.day-1].timeSlot,collisions);
-        for(let j=0; j<lengthOfObj; j++){
-          this.userCalendar[this.monthToDate + this.day].timeSlot
-          .splice(
-            this.startTimeSlot(
-              object.get('eventStartHour').value,
-              object.get('eventStartMinute').value), 1,
-          {
-            eventname: object.get('eventName').value,
-            priority: object.get('eventPriority').value,
-            startingLength: lengthOfObj,
-            available: false
-          });
-        }
+        const collisions  = this.numberOfCollisions(this.startTimeSlot(object.get('eventStartHour').value, object.get('eventStartMinute').value ), object);
+        this.makeSpace(this.userCalendar[this.monthToDate + this.day - 1].timeSlot, collisions);
+        // for (let j = 0; j < lengthOfObj; j++) {
+        //   this.userCalendar[this.monthToDate + this.day].timeSlot
+        //   .splice(
+
+        //     this.startTimeSlot(
+        //       object.get('eventStartHour').value,
+        //       object.get('eventStartMinute').value), 1,
+        //   {
+        //     eventname: object.get('eventName').value,
+        //     priority: object.get('eventPriority').value,
+        //     startingLength: lengthOfObj,
+        //     available: false
+        //   });
+        // }
       }
       console.log(this.userCalendar);
 
@@ -183,47 +189,45 @@ export class HomeComponent implements OnInit {
 
   consecutiveAvailibility(neededTime) {
     const presetNeededTime = neededTime;
-    for(let i=0; i<this.userCalendar[this.monthToDate + this.day-1].timeSlot.length;i++) {
-      if (this.userCalendar[this.monthToDate + this.day-1].timeSlot[i].available == true) {
+    for (let i = 0; i < this.userCalendar[this.monthToDate + this.day - 1].timeSlot.length; i++) {
+      if (this.userCalendar[this.monthToDate + this.day - 1].timeSlot[i].available == true) {
         neededTime --;
         if (neededTime == 0) {
-          console.log('consec');
-          console.log(i-presetNeededTime+1);
-          return i-presetNeededTime+1;
+          return i - presetNeededTime + 1;
         }
-      }
-      else if(this.userCalendar[this.monthToDate + this.day-1].timeSlot[i].available == false){
+      } else if (this.userCalendar[this.monthToDate + this.day - 1].timeSlot[i].available == false) {
         neededTime = presetNeededTime;
       }
     }
     return 100;
   }
 
-  numberOfCollisions (desiredStartTime, actualObjectToBeInserted: TimeSlot) {
+  numberOfCollisions(desiredStartTime, actualObjectToBeInserted: TimeSlot) {
     let collisions = 0;
-    for (let i=desiredStartTime;i<actualObjectToBeInserted.startingLength;i++) {
-      if(this.userCalendar[this.monthToDate + this.day-1].timeSlot[i].available==false) {
+    for (let i = desiredStartTime; i < actualObjectToBeInserted.startingLength; i++) {
+      if (this.userCalendar[this.monthToDate + this.day - 1].timeSlot[i].available == false) {
         collisions++;
       }
     }
     return collisions;
   }
 
-  makeSpace(array, needed){
-    for(let i = 0; i < Array.length; i++){
-      if(needed = 0){
-        return true;
+  makeSpace(array, needed) {
+    console.log('reaching mat');
+    for (let i = 0; i < Array.length; i++) {
+      if (needed = 0) {
+        return array;
       }
-      if(array[i] == null){ //ts.available==true
+      if (array[i] == null) { // ts.available==true
         array = this.shift(array, i);
-        this.makeSpace(array, needed-1);
+        this.makeSpace(array, needed - 1);
       }
     }
-    }
-    
-    shift(array,  i){
-      for(let j = i; j < Array.length; j++){
-       array[j]=array[j+1];
+  }
+
+    shift(array,  i) {
+      for (let j = i; j < Array.length; j++) {
+       array[j] = array[j + 1];
       }
       return Array;
     }
