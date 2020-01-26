@@ -144,12 +144,32 @@ export class HomeComponent implements OnInit {
      let lengthOfObj = this.length(object.get('eventStartHour').value, object.get('eventStartMinute').value, object.get('eventEndHour').value, object.get('eventEndMinute').value);
      if (this.userCalendar[this.monthToDate + this.day-1].available >= lengthOfObj) {
       if (this.consecutiveAvailibility(lengthOfObj)!= 100) { // if stuck togeather availibility
+        let tryme= this.consecutiveAvailibility(lengthOfObj);
+
+        for(let j=this.startTimeSlot(object.get('eventStartHour').value,
+        object.get('eventStartMinute').value); j<lengthOfObj; j++) {
+          this.userCalendar[this.monthToDate + this.day].timeSlot[j]= {
+            eventname: object.get('eventName').value,
+            priority: object.get('eventPriority').value,
+            startingLength: lengthOfObj,
+            available: false
+          }
+          this.userCalendar[this.monthToDate + this.day-1].available-=lengthOfObj;
+        }
+      }
+      if (this.consecutiveAvailibility(lengthOfObj) == 100 && object.get('eventPriority').value==0) { // if not stuck togeather availibility
+        console.log('nooooo');
+        let collisions  = this.numberOfCollisions(this.startTimeSlot(object.get('eventStartHour').value,object.get('eventStartMinute').value ),object);
+        this.makeSpace(this.userCalendar[this.monthToDate + this.day-1].timeSlot,collisions);
         for(let j=0; j<lengthOfObj; j++){
           this.userCalendar[this.monthToDate + this.day].timeSlot
-          .splice(this.consecutiveAvailibility(lengthOfObj), 1,
+          .splice(
+            this.startTimeSlot(
+              object.get('eventStartHour').value,
+              object.get('eventStartMinute').value), 1,
           {
-            eventname: object.get('eventName'),
-            priority: object.get('eventPriority'),
+            eventname: object.get('eventName').value,
+            priority: object.get('eventPriority').value,
             startingLength: lengthOfObj,
             available: false
           });
@@ -167,7 +187,7 @@ export class HomeComponent implements OnInit {
       if (this.userCalendar[this.monthToDate + this.day-1].timeSlot[i].available == true) {
         neededTime --;
         if (neededTime == 0) {
-          console.log('rwfder');
+          console.log('consec');
           console.log(i-presetNeededTime+1);
           return i-presetNeededTime+1;
         }
@@ -177,28 +197,36 @@ export class HomeComponent implements OnInit {
       }
     }
     return 100;
-
-    // this.userCalendar[this.monthToDate + this.day-1].timeSlot.forEach(element => {
-    //   if (element.available==true) {
-    //     console.log('found nothing');
-    //     neededTime--;
-    //     if (neededTime == 0) {
-    //       console.log('yesssss');
-    //       console.log(this.userCalendar[this.monthToDate + this.day-1].timeSlot.indexOf(element));
-    //       console.log(this.userCalendar[this.monthToDate + this.day-1].timeSlot.indexOf(element) - presetNeededTime);
-    //       return (this.userCalendar[this.monthToDate + this.day-1].timeSlot.indexOf(element) - presetNeededTime);
-    //     }
-    //   } 
-    //   else {
-    //     neededTime = presetNeededTime;
-    //   }
-    // });
-    // return null; // no consecutive availibility return false
   }
 
-  startTime() {
-
+  numberOfCollisions (desiredStartTime, actualObjectToBeInserted: TimeSlot) {
+    let collisions = 0;
+    for (let i=desiredStartTime;i<actualObjectToBeInserted.startingLength;i++) {
+      if(this.userCalendar[this.monthToDate + this.day-1].timeSlot[i].available==false) {
+        collisions++;
+      }
+    }
+    return collisions;
   }
+
+  makeSpace(array, needed){
+    for(let i = 0; i < Array.length; i++){
+      if(needed = 0){
+        return true;
+      }
+      if(array[i] == null){ //ts.available==true
+        array = this.shift(array, i);
+        this.makeSpace(array, needed-1);
+      }
+    }
+    }
+    
+    shift(array,  i){
+      for(let j = i; j < Array.length; j++){
+       array[j]=array[j+1];
+      }
+      return Array;
+    }
 
   length(startHour, startMin, endHour, endMin) {
     return (((endHour * 4) + (endMin / 15)) - ((startHour * 4) + (startMin / 15)));
