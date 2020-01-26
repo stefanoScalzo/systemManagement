@@ -4,7 +4,7 @@
     <form [formGroup] = "formdata" >
                 Select a Date:
     <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="eventDate">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
@@ -13,14 +13,14 @@
 
     Name of Event:
     <mat-form-field>
-        <input matInput placeholder="Event Name">
+        <input matInput placeholder="Event Name" formControlName="eventName">
     </mat-form-field>
 
     <br><br>
 
     Priority: 
     <mat-form-field>
-        <mat-select placeholder="Priority">
+        <mat-select placeholder="Priority" formControlName="eventPriority">
             <mat-option *ngFor="let priority of priorities"
             [value]="priority">
             {{priority}}
@@ -30,9 +30,9 @@
 
     <br> <br>
 
-    Ideal Start Time:
+    Ideal Start Hour:
     <mat-form-field>
-        <mat-select placeholder="Hour">
+        <mat-select placeholder="Hour" formControlName="eventStartHour">
             <mat-option *ngFor="let hour of hours"
             [value]="hour">
             {{hour}}
@@ -42,9 +42,38 @@
 
     <br><br>
 
-    Event Duration:
+    Ideal Start Minute:
     <mat-form-field>
-        <input matInput placeholder="Event Duration">
+        <mat-select placeholder="Hour" formControlName="eventStartMinute">
+            <mat-option *ngFor="let minute of minutes"
+            [value]="minute">
+            {{minute}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <br><br>
+
+    Ideal End Hour:
+    <mat-form-field>
+        <mat-select placeholder="Hour" formControlName="eventStartMinute">
+            <mat-option *ngFor="let hour of hours"
+            [value]="hour">
+            {{hour}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <br><br>
+
+    Ideal End Minute:
+    <mat-form-field>
+        <mat-select placeholder="Hour" formControlName="eventEndMinute">
+            <mat-option *ngFor="let minute of minutes"
+            [value]="minute">
+            {{minute}}
+            </mat-option>
+        </mat-select>
     </mat-form-field>
 
     <br><br>
