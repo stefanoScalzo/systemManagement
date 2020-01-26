@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { EventCreatorComponent } from './event-creator/event-creator.component';
+import { EventPriorityComponent } from './event-priority/event-priority.component';
 
 @Component({
   selector: 'app-home',
@@ -42,7 +43,11 @@ export class HomeComponent implements OnInit {
     {eventname: 'COMP 354', priority: 5}
   ];
 
+
   userCalendar = [];
+  constructor(public dialog: MatDialog) { }
+
+
 
   ngOnInit() {
     for (let i = 0; i < 8; i++) {
@@ -58,7 +63,7 @@ export class HomeComponent implements OnInit {
   }
 
   mathFloor(num){
-    
+
     return Math.floor(num);
   }
 
@@ -76,6 +81,15 @@ export class HomeComponent implements OnInit {
 
   getDay(gmtString) {
     this.day = parseInt(gmtString);
+  }
+
+
+  openPriorityDialog() {
+    const dialogRef = this.dialog.open(EventPriorityComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 
   getMonth(gmtString) {
@@ -117,8 +131,6 @@ export class HomeComponent implements OnInit {
       this.monthToDate = 31 + 29 + 31 + 30 + 31 + 30 + 31 + 30 + 31 + 30 + 31;
     }
   }
-  constructor(public dialog: MatDialog){}
-
   openEventCreatorDialog() {
     const dialogRef = this.dialog.open(EventCreatorComponent);
 
