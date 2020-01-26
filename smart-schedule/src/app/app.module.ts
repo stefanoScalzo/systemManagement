@@ -54,6 +54,10 @@ import { EventCreatorComponent } from './home/event-creator/event-creator.compon
     MatNativeDateModule,
     MatDatepickerModule
   ],
+  entryComponents: [
+    EventCreatorComponent,
+    EventPriorityComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
