@@ -120,3 +120,7 @@ export class HomeComponent implements OnInit {
   }
 
 }
+
+
+//constructor
+//open dialog function with class name
