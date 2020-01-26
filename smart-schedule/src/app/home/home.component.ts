@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatDialogRef, MatDialog } from '@angular/material';
+import { EventCreatorComponent } from './event-creator/event-creator.component';
 
 @Component({
   selector: 'app-home',
@@ -41,9 +43,6 @@ export class HomeComponent implements OnInit {
   ];
 
   userCalendar = [];
-  constructor() { }
-
-
 
   ngOnInit() {
     for (let i = 0; i < 8; i++) {
@@ -118,9 +117,14 @@ export class HomeComponent implements OnInit {
       this.monthToDate = 31 + 29 + 31 + 30 + 31 + 30 + 31 + 30 + 31 + 30 + 31;
     }
   }
+  constructor(public dialog: MatDialog){}
 
-}
+  openEventCreatorDialog() {
+    const dialogRef = this.dialog.open(EventCreatorComponent);
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+    }
+  }
 
-//constructor
-//open dialog function with class name

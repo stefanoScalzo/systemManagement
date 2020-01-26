@@ -1,6 +1,7 @@
+<h1 mat-dialog-title>Let's add an event to your calendar!</h1>
 
-<!-- <form [formGroup] = "formdata" (ngSubmit) = "onClickSubmit(formdata.value)" > -->
-        <form [formGroup] = "formdata" >
+<div mat-dialog-content>
+    <form [formGroup] = "formdata" >
                 Select a Date:
     <mat-form-field>
         <input matInput [matDatepicker]="picker" placeholder="Choose a date">
@@ -47,13 +48,11 @@
     </mat-form-field>
 
     <br><br>
-
-    <button mat-button>Submit</button>
 </form>
 
-<!-- //header with mat dialog <title>
-    //form goes into mat content dialog selector
+</div>
 
-    //mat dialog close = "what youre returning inhere, inn this case an object"
-
-    //button for submit is outside -->
+<div mat-dialog-actions>
+        <button mat-button (click)="onNoClick()">Cancel</button>
+        <button mat-button [mat-dialog-close]="formdata" cdkFocusInitial>Add</button>
+</div>

@@ -17,6 +17,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSelectModule} from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SurpassedComponent } from './home/surpassed/surpassed.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { EventCreatorComponent } from './home/event-creator/event-creator.component';
 
@@ -35,6 +36,7 @@ import { EventCreatorComponent } from './home/event-creator/event-creator.compon
     AppRoutingModule,
     BrowserAnimationsModule,
     MatCardModule,
+    MatDialogModule,
     MatListModule,
     MatIconModule,
     MatInputModule,
