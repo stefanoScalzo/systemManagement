@@ -18,6 +18,8 @@ import {MatSelectModule} from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SurpassedComponent } from './home/surpassed/surpassed.component';
 
+import { EventCreatorComponent } from './home/event-creator/event-creator.component';
+
 
 @NgModule({
   declarations: [
@@ -26,27 +28,27 @@ import { SurpassedComponent } from './home/surpassed/surpassed.component';
     HomeComponent,
     EventPriorityComponent,
 
+    EventCreatorComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatButtonModule,
     MatCardModule,
     MatListModule,
-    MatFormFieldModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatButtonModule,    
+    MatFormFieldModule,
     MatNativeDateModule,
     MatSelectModule,
+    MatDatepickerModule,
     ReactiveFormsModule
   ],
-  providers: [MatNativeDateModule],
+  providers: [
+    MatNativeDateModule,
+    MatDatepickerModule
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

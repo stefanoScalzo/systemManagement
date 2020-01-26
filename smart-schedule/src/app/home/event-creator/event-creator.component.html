@@ -1,0 +1,59 @@
+
+<!-- <form [formGroup] = "formdata" (ngSubmit) = "onClickSubmit(formdata.value)" > -->
+        <form [formGroup] = "formdata" >
+                Select a Date:
+    <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <br><br>
+
+    Name of Event:
+    <mat-form-field>
+        <input matInput placeholder="Event Name">
+    </mat-form-field>
+
+    <br><br>
+
+    Priority: 
+    <mat-form-field>
+        <mat-select placeholder="Priority">
+            <mat-option *ngFor="let priority of priorities"
+            [value]="priority">
+            {{priority}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <br> <br>
+
+    Ideal Start Time:
+    <mat-form-field>
+        <mat-select placeholder="Hour">
+            <mat-option *ngFor="let hour of hours"
+            [value]="hour">
+            {{hour}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <br><br>
+
+    Event Duration:
+    <mat-form-field>
+        <input matInput placeholder="Event Duration">
+    </mat-form-field>
+
+    <br><br>
+
+    <button mat-button>Submit</button>
+</form>
+
+<!-- //header with mat dialog <title>
+    //form goes into mat content dialog selector
+
+    //mat dialog close = "what youre returning inhere, inn this case an object"
+
+    //button for submit is outside -->
