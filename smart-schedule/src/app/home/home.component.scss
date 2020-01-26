@@ -1,0 +1,38 @@
+.flex-layout-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-layout {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.header {
+    margin-right: 1rem;
+    margin-top: 0.125rem;
+    margin-bottom: 0.125rem;
+}
+
+.event {
+    margin-top: 0.125rem;
+    margin-bottom: 0.125rem; 
+}
+
+.list{
+    margin: 0 1rem;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-column {
+    display:flex;
+    align-items: center;
+}

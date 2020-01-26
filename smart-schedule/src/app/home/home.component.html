@@ -1,1 +1,29 @@
-<p>home works!</p>
+<div class="flex-layout">
+    <button mat-icon-button><mat-icon>add</mat-icon></button>
+
+    <div class="flex-layout-inner">
+        <h1 class="header">Week</h1>
+            <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Choose a day"
+                    (dateInput)="addEvent('input', $event)" (dateChange)="addEvent('change', $event)">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        <button class="list" mat-icon-button><mat-icon>list</mat-icon></button >
+    </div>
+    <div class="flex-layout-inner">
+        <div class="flex-row">
+            <ng-container  *ngFor="let day of userCalendar; let i = index;">
+                <ng-container *ngIf= "true">
+                <h1>Day {{i}}</h1>
+                    <ng-container *ngFor="let time of day; let j = index;">
+                        <div class="flex-column">
+                            <h3 class="header">{{mathFloor(j/4)}}:{{(j%4)*15}}</h3>
+                            <h4 class="event">{{time.eventname}}</h4>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+</div>
