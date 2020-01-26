@@ -13,6 +13,7 @@ import {userTime} from './userTime';
 })
 export class HomeComponent implements OnInit {
 
+  resultToHome;
   date; // date from the datepicker
   day; // day in number
   month; // month in number
@@ -36,10 +37,12 @@ export class HomeComponent implements OnInit {
     for (let i = 0; i < 8; i++) {
       this.userCalendar.push(this.timePerDay);
     }
-    for (let j=0; j<96 ; j++){
+    for (let j = 0; j < 96 ; j++) {
       this.timePerDay.timeSlot.push({eventname: 'COMP 354', priority: 5});
-      this.timePerDay.available= this.timePerDay.available - 1;
+      // this.timePerDay.available = this.timePerDay.available - 1;
     }
+    console.log(this.userCalendar);
+    console.log(this.userCalendar);
   }
 
   dayShown(index) {
@@ -51,7 +54,7 @@ export class HomeComponent implements OnInit {
 
   }
 
-  mathFloor(num){
+  mathFloor(num) {
 
     return Math.floor(num);
   }
@@ -64,7 +67,7 @@ export class HomeComponent implements OnInit {
     console.log('starting' + this.dayToStartingIndex);
   }
 
-  dayToIndex () {
+  dayToIndex() {
     this.dayToStartingIndex = this.monthToDate + this.day;
   }
 
@@ -132,17 +135,61 @@ export class HomeComponent implements OnInit {
       this.monthToDate = 31 + 29 + 31 + 30 + 31 + 30 + 31 + 30 + 31 + 30 + 31;
     }
   }
-  lowestPriorityAdd (priority, length) {
-    if (true){
-      ;
+
+  add(object) {
+     console.log('object you are looking for');
+     console.log(object);
+    let lengthOfObj = this.length(object.get('eventStartHour'), object.get('eventStartMinute'), object.get('eveEndrtHour'), object.get('eventEndMinute'));
+    if (this.userCalendar[this.monthToDate + this.day].available >= lengthOfObj) {
+      if (this.consecutiveAvailibility(lengthOfObj)!==null) { // if stuck availibility
+        this.userCalendar[this.monthToDate + this.day].timeSlot
+        .splice(this.consecutiveAvailibility(lengthOfObj), 0,
+        {
+          eventname: object.get('eventName'),
+          priority: object.get('eventPriority'),
+          startingLength: lengthOfObj
+        });
+      }
+      console.log(this.userCalendar);
+
+   //   this.userCalendar[this.monthToDate+this.day].userTime.timeSlot[1]; //asusming the day is the same as shown on the home
     }
+  }
+
+  consecutiveAvailibility(neededTime) {
+    const presetNeededTime = neededTime;
+    this.userCalendar[this.monthToDate + this.day].timeSlot.forEach(element => {
+      if (!element) {
+        neededTime--;
+        if (neededTime == 0) {
+          return (this.userCalendar[this.monthToDate + this.day].timeSlot.indexOf(element) - neededTime);
+        }
+      } else {
+        neededTime = presetNeededTime;
+      }
+    });
+    return null; // no consecutive availibility return false
+  }
+
+  startTime() {
+
+  }
+
+  length(startHour, startMin, endHour, endMin) {
+    return (((endHour * 4) + (endMin / 15)) - ((startHour * 4) + (startMin / 15)));
+  }
+
+  startTimeSlot(startHour, startMin) {
+    return (startHour * 4) + (startMin / 15);
   }
 
   openEventCreatorDialog() {
     const dialogRef = this.dialog.open(EventCreatorComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      if (result) {
+        this.add(result);
+      }
     });
   }
 }
